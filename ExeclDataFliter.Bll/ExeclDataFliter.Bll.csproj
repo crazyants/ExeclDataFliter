@@ -49,6 +49,9 @@
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>..\Dll\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="SmartThreadPool">
+      <HintPath>..\Dll\SmartThreadPool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -63,6 +66,7 @@
     <Compile Include="DataFileType.cs" />
     <Compile Include="ExcelTransferData.cs" />
     <Compile Include="ITransferData.cs" />
+    <Compile Include="LargeTransferData.cs" />
     <Compile Include="NPioExcelHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferDataFactory.cs" />
@@ -71,6 +75,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExeclDataFliter.Util\ExeclDataFliter.Util.csproj">
+      <Project>{411114ca-dbdb-46c2-a9c4-30f80d6886eb}</Project>
+      <Name>ExeclDataFliter.Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

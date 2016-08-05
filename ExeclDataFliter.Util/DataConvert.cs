@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Amib.Threading;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ExeclDataFliter.Util
@@ -35,9 +37,19 @@ namespace ExeclDataFliter.Util
                             if (dr.Table.Columns.Contains(dataFieldAttr.ColumnName))
                             {
                                 //根据ColumnName，将dr中的相对字段赋值给Entity属性
-                                propInfo.SetValue(entity, Convert.ChangeType(dr[dataFieldAttr.ColumnName], propInfo.PropertyType), null);
+                                if (dr[dataFieldAttr.ColumnName].ToString() == dataFieldAttr.ColumnName)
+                                {
+                                    // 这行应该是标题
+                                    string title = dr[dataFieldAttr.ColumnName].ToString();
+                                }
+                                else
+                                {
+                                    if (dr[dataFieldAttr.ColumnName] != DBNull.Value)
+                                    {
+                                        propInfo.SetValue(entity, Convert.ChangeType(dr[dataFieldAttr.ColumnName], propInfo.PropertyType), null);
+                                    }
+                                }
                             }
-
                         }
                     }
                 }
@@ -53,10 +65,12 @@ namespace ExeclDataFliter.Util
         public static List<T> ToList(DataTable dt)
         {
             List<T> list = new List<T>(dt.Rows.Count);
-            foreach (DataRow dr in dt.Rows)
+
+            for (int i = 0; i < dt.Rows.Count - 1; i++)
             {
-                list.Add(ToEntity(dr));
+                list.Add(ToEntity(dt.Rows[i]));
             }
+
             return list;
         }
     }

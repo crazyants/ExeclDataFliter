@@ -42,11 +42,13 @@ namespace ExeclDataFliter.Win
             List<MFlightSeal> flightSealList = new List<MFlightSeal>();
 
 
-            flightSealList = DataConvert<MFlightSeal>.ToList(exceldata);
+            LargeTransferData<MFlightSeal> largeTransferData = new LargeTransferData<MFlightSeal>();
+
+            largeTransferData.ToListThread(exceldata);
+
+            flightSealList = largeTransferData.DataList;
 
             int SegmentCount = flightSealList.Sum(p => p.SegmentCount);
-
-           
 
             this.dataGridView1.DataSource = exceldata;
             this.dataGridView1.Show();
