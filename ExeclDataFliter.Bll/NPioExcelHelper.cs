@@ -3,9 +3,11 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -172,6 +174,90 @@ namespace ExeclDataFliter.Bll
                 Console.WriteLine("Exception: " + ex.Message);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// 根据model转excel
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="modellist"></param>
+        /// <returns></returns>
+        private HSSFWorkbook FliterData<T>(IList<T> modellist)
+        {
+            HSSFWorkbook book = new HSSFWorkbook();
+            //添加一个sheet
+            ISheet sheet1 = book.CreateSheet("Sheet1");
+            //获取list数据
+            //给sheet1添加第一行的头部标题
+            IRow row1 = sheet1.CreateRow(0);
+
+            Type type1 = typeof(T);
+
+            System.Reflection.PropertyInfo[] ps = type1.GetProperties();
+            if (ps != null && ps.Length > 0)
+            {
+                for (int i = 0; i < ps.Length; i++)
+                {
+                    var des = ((DescriptionAttribute)Attribute.GetCustomAttribute(ps[i], typeof(DescriptionAttribute))).Description;
+                    row1.CreateCell(i).SetCellValue(des);
+                }
+            }
+            ////将数据逐步写入sheet1各个行
+            for (int i = 0; i < modellist.Count; i++)
+            {
+                NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
+                for (int j = 0; j < ps.Length; j++)
+                {
+                    var des = ((DescriptionAttribute)Attribute.GetCustomAttribute(ps[j], typeof(DescriptionAttribute))).Description;
+                    var value = GetValueByDes(modellist[i], ps, des);
+                    string cellvalue = string.Empty;
+                    if (ps[j].PropertyType == typeof(DateTime))
+                    {
+                        cellvalue = Convert.ToDateTime(value).ToString("yyyy-MM-dd HH:mm:ss");
+                    }
+
+                    else if (ps[j].PropertyType == typeof(decimal))
+                    {
+                        cellvalue = Math.Round(Convert.ToDecimal(value), 2).ToString();
+
+                    }
+                    else
+                    {
+
+                        cellvalue = value.ToString();
+                    }
+
+                    rowtemp.CreateCell(j).SetCellValue(cellvalue);
+                }
+            }
+
+            return book;
+        }
+
+        /// <summary>
+        /// 通过反射获取model指定字段的值
+        /// </summary>
+        /// <typeparam name="T">类型</typeparam>
+        /// <param name="model">数据实体</param>
+        /// <param name="propertyInfo">属性</param>
+        /// <param name="description">描述</param>
+        /// <returns></returns>
+        private object GetValueByDes<T>(T model, PropertyInfo[] propertyInfo, string description)
+        {
+            Type modetype = typeof(T);
+            object value = null;
+            for (int j = 0; j < propertyInfo.Length; j++)
+            {
+                string des = ((DescriptionAttribute)Attribute.GetCustomAttribute(propertyInfo[j], typeof(DescriptionAttribute))).Description;
+                if (des == description)
+                {
+                    var propInfo = modetype.GetProperty(propertyInfo[j].Name);
+                    value = propInfo.GetValue(model, null);
+                    break;
+                }
+            }
+
+            return value;
         }
 
         public void Dispose()
