@@ -58,7 +58,7 @@ namespace ExeclDataFliter.Model
 
 
         /// <summary>
-        /// 出发城市
+        /// 航线
         /// </summary>
         [DataField("航线")]
         public string FlightLine { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace ExeclDataFliter.Win
 {
-    partial class Form1
+    partial class databox
     {
         /// <summary>
         /// 必需的设计器变量。
@@ -32,18 +32,28 @@
             this.excelImprot = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.datarichTextBox = new System.Windows.Forms.RichTextBox();
+            this.FlightTimeEnd = new System.Windows.Forms.DateTimePicker();
+            this.FlightTimeStart = new System.Windows.Forms.DateTimePicker();
+            this.label7 = new System.Windows.Forms.Label();
+            this.SealTimeEnd = new System.Windows.Forms.DateTimePicker();
+            this.SealTimeStart = new System.Windows.Forms.DateTimePicker();
+            this.label6 = new System.Windows.Forms.Label();
+            this.Cabin = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.FlightLine = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.changle = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.aircompany = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +63,7 @@
             // 
             // excelImprot
             // 
-            this.excelImprot.Location = new System.Drawing.Point(45, 24);
+            this.excelImprot.Location = new System.Drawing.Point(25, 20);
             this.excelImprot.Name = "excelImprot";
             this.excelImprot.Size = new System.Drawing.Size(75, 23);
             this.excelImprot.TabIndex = 1;
@@ -68,29 +78,176 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 21);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 27;
-            this.dataGridView1.Size = new System.Drawing.Size(1235, 515);
+            this.dataGridView1.Size = new System.Drawing.Size(1458, 394);
             this.dataGridView1.TabIndex = 2;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.groupBox3);
+            this.groupBox1.Controls.Add(this.FlightTimeEnd);
+            this.groupBox1.Controls.Add(this.FlightTimeStart);
+            this.groupBox1.Controls.Add(this.label7);
+            this.groupBox1.Controls.Add(this.SealTimeEnd);
+            this.groupBox1.Controls.Add(this.SealTimeStart);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.Cabin);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.FlightLine);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox4);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBox3);
+            this.groupBox1.Controls.Add(this.changle);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.aircompany);
             this.groupBox1.Controls.Add(this.excelImprot);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1241, 124);
+            this.groupBox1.Size = new System.Drawing.Size(1464, 241);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "操作区";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.datarichTextBox);
+            this.groupBox3.Location = new System.Drawing.Point(799, 28);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(632, 185);
+            this.groupBox3.TabIndex = 5;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "数据结果：";
+            // 
+            // datarichTextBox
+            // 
+            this.datarichTextBox.Location = new System.Drawing.Point(17, 24);
+            this.datarichTextBox.Name = "datarichTextBox";
+            this.datarichTextBox.Size = new System.Drawing.Size(609, 129);
+            this.datarichTextBox.TabIndex = 0;
+            this.datarichTextBox.Text = "";
+            // 
+            // FlightTimeEnd
+            // 
+            this.FlightTimeEnd.CustomFormat = "yyyy-MM-dd";
+            this.FlightTimeEnd.Location = new System.Drawing.Point(431, 82);
+            this.FlightTimeEnd.Name = "FlightTimeEnd";
+            this.FlightTimeEnd.Size = new System.Drawing.Size(200, 25);
+            this.FlightTimeEnd.TabIndex = 17;
+            // 
+            // FlightTimeStart
+            // 
+            this.FlightTimeStart.Cursor = System.Windows.Forms.Cursors.Default;
+            this.FlightTimeStart.CustomFormat = "yyyy-MM-dd";
+            this.FlightTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.FlightTimeStart.Location = new System.Drawing.Point(209, 83);
+            this.FlightTimeStart.Name = "FlightTimeStart";
+            this.FlightTimeStart.Size = new System.Drawing.Size(200, 25);
+            this.FlightTimeStart.TabIndex = 16;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(122, 90);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(82, 15);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "起飞时间：";
+            // 
+            // SealTimeEnd
+            // 
+            this.SealTimeEnd.CustomFormat = "yyyy-MM-dd";
+            this.SealTimeEnd.Location = new System.Drawing.Point(431, 20);
+            this.SealTimeEnd.Name = "SealTimeEnd";
+            this.SealTimeEnd.Size = new System.Drawing.Size(200, 25);
+            this.SealTimeEnd.TabIndex = 14;
+            // 
+            // SealTimeStart
+            // 
+            this.SealTimeStart.Cursor = System.Windows.Forms.Cursors.Default;
+            this.SealTimeStart.CustomFormat = "yyyy-MM-dd";
+            this.SealTimeStart.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.SealTimeStart.Location = new System.Drawing.Point(209, 21);
+            this.SealTimeStart.Name = "SealTimeStart";
+            this.SealTimeStart.Size = new System.Drawing.Size(200, 25);
+            this.SealTimeStart.TabIndex = 13;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(428, 145);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(52, 15);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "舱位：";
+            // 
+            // Cabin
+            // 
+            this.Cabin.Location = new System.Drawing.Point(486, 142);
+            this.Cabin.Name = "Cabin";
+            this.Cabin.Size = new System.Drawing.Size(156, 25);
+            this.Cabin.TabIndex = 11;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(670, 45);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "查询";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(428, 198);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(52, 15);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "航线：";
+            // 
+            // FlightLine
+            // 
+            this.FlightLine.Location = new System.Drawing.Point(486, 188);
+            this.FlightLine.Name = "FlightLine";
+            this.FlightLine.Size = new System.Drawing.Size(156, 25);
+            this.FlightLine.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(122, 28);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(82, 15);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "销售时间：";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(122, 191);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(52, 15);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "渠道：";
+            // 
+            // changle
+            // 
+            this.changle.Location = new System.Drawing.Point(211, 188);
+            this.changle.Name = "changle";
+            this.changle.Size = new System.Drawing.Size(199, 25);
+            this.changle.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(122, 142);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(52, 15);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "航司：";
             // 
             // label1
             // 
@@ -99,12 +256,12 @@
             this.label1.Size = new System.Drawing.Size(100, 23);
             this.label1.TabIndex = 0;
             // 
-            // textBox2
+            // aircompany
             // 
-            this.textBox2.Location = new System.Drawing.Point(316, 89);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(199, 25);
-            this.textBox2.TabIndex = 2;
+            this.aircompany.Location = new System.Drawing.Point(211, 139);
+            this.aircompany.Name = "aircompany";
+            this.aircompany.Size = new System.Drawing.Size(199, 25);
+            this.aircompany.TabIndex = 2;
             // 
             // groupBox2
             // 
@@ -112,82 +269,26 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.dataGridView1);
-            this.groupBox2.Location = new System.Drawing.Point(12, 142);
+            this.groupBox2.Location = new System.Drawing.Point(12, 288);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1241, 539);
+            this.groupBox2.Size = new System.Drawing.Size(1464, 418);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "数据区";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(250, 92);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(52, 15);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "航司：";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(534, 92);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 15);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "渠道：";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(623, 89);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(199, 25);
-            this.textBox3.TabIndex = 4;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(228, 28);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(82, 15);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "销售时间：";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(316, 25);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(199, 25);
-            this.textBox4.TabIndex = 6;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(535, 28);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(52, 15);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "航线：";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(623, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(199, 25);
-            this.textBox1.TabIndex = 8;
-            // 
-            // Form1
+            // databox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1265, 693);
+            this.ClientSize = new System.Drawing.Size(1488, 718);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Name = "Form1";
+            this.Name = "databox";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -201,14 +302,23 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox aircompany;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox changle;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox FlightLine;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox Cabin;
+        private System.Windows.Forms.DateTimePicker SealTimeEnd;
+        private System.Windows.Forms.DateTimePicker SealTimeStart;
+        private System.Windows.Forms.DateTimePicker FlightTimeEnd;
+        private System.Windows.Forms.DateTimePicker FlightTimeStart;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.RichTextBox datarichTextBox;
     }
 }
 
