@@ -16,7 +16,7 @@ namespace ExeclDataFliter.Win
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new databox());
+            Application.Run(new LossFilter());
         }
     }
 }

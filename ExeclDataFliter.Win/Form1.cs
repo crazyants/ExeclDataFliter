@@ -28,6 +28,11 @@ namespace ExeclDataFliter.Win
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 导入数据按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void excelImprot_Click(object sender, EventArgs e)
         {
             OpenFileDialog openFile = new OpenFileDialog();
@@ -52,41 +57,11 @@ namespace ExeclDataFliter.Win
             loaddatacation.BeginInvoke(exceldata, null, null);
         }
 
-        private DataTable GetDataFromExcel(string filepath, bool hasTitle = false)
-        {
-            FileStream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            var util = TransferDataFactory.GetUtil(filepath);
-            return util.GetData(stream);
-        }
-
-        private void LoadData(DataTable exceldata)
-        {
-            LargeTransferData<MFlightSeal> largeTransferData = new LargeTransferData<MFlightSeal>();
-
-            largeTransferData.ToListThread(exceldata);
-
-            flightSealList = largeTransferData.DataList;
-            if (flightSealList != null && flightSealList.Count > 0)
-            {
-                foreach (var item in flightSealList)
-                {
-                    if (string.IsNullOrEmpty(item.AirCompany))
-                    {
-                        continue;
-                    }
-
-                    if (flightSealDic.ContainsKey(item.AirCompany.ToUpper()))
-                    {
-                        flightSealDic[item.AirCompany.ToUpper()].Add(item);
-                    }
-                    else
-                    {
-                        flightSealDic.Add(item.AirCompany.ToUpper(), new List<MFlightSeal>() { item });
-                    }
-                }
-            }
-        }
-
+        /// <summary>
+        /// 查询按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             List<MFlightSeal> TempflightSealList = new List<MFlightSeal>();
@@ -186,6 +161,59 @@ namespace ExeclDataFliter.Win
             this.datarichTextBox.AppendText(string.Format("符合条件的数据总数{0}，航段数：{1}，总票价{2}", dataflightSealList.Count, segmentCount, priceCount));
         }
 
+        /// <summary>
+        /// 从excel中获取数据
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="hasTitle"></param>
+        /// <returns></returns>
+        private DataTable GetDataFromExcel(string filepath, bool hasTitle = false)
+        {
+            FileStream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
+            var util = TransferDataFactory.GetUtil(filepath);
+            return util.GetData(stream);
+        }
+
+        /// <summary>
+        /// 加载数据
+        /// </summary>
+        /// <param name="exceldata"></param>
+        private void LoadData(DataTable exceldata)
+        {
+            LargeTransferData<MFlightSeal> largeTransferData = new LargeTransferData<MFlightSeal>();
+
+            largeTransferData.ToListThread(exceldata);
+
+            flightSealList = largeTransferData.DataList;
+            if (flightSealList != null && flightSealList.Count > 0)
+            {
+                foreach (var item in flightSealList)
+                {
+                    if (string.IsNullOrEmpty(item.AirCompany))
+                    {
+                        continue;
+                    }
+
+                    if (flightSealDic.ContainsKey(item.AirCompany.ToUpper()))
+                    {
+                        flightSealDic[item.AirCompany.ToUpper()].Add(item);
+                    }
+                    else
+                    {
+                        flightSealDic.Add(item.AirCompany.ToUpper(), new List<MFlightSeal>() { item });
+                    }
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 数据模型转换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="description"></param>
+        /// <returns></returns>
         private object DataToModel<T>(T model, string description)
         {
 
