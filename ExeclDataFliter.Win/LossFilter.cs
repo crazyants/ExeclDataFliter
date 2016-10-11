@@ -84,6 +84,10 @@ namespace ExeclDataFliter.Win
                     lossReport.AirCompany = item.AirCompany;
                     lossReport.ArriveAirPort = item.ArriveAirPort;
                     lossReport.BabyFlightLeg = item.FlightLeg - item.AdultFlightLeg - item.ChildFlightLeg;
+                    lossReport.ClientRealPayPrice = item.RealIncomeFromClientPrice - item.InsurancePrice - item.MailPrice;
+                    lossReport.StickMoney = item.SystemPrice*item.InBackRatio*item.
+                    lossReport.ClientShouldPayPrice = item.SystemPrice + item.JijianPrice + item.OilPrice - lossReport.StickMoney;
+                    lossReport.ClientLoss = item.ClientRealPayPrice item.ClientShouldPayTicketPrice
                 }
             }
         }
