@@ -1,6 +1,7 @@
 ﻿using ExeclDataFliter.Util;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -98,7 +99,7 @@ namespace ExeclDataFliter.Model
         /// 电子客票号票价
         /// </summary>
         [DataField("电子客票号票价")]
-        public decimal BasePrice
+        public decimal ETCBasePrice
         {
             get;
             set;

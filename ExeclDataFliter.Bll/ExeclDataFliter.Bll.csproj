@@ -77,6 +77,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ExeclDataFliter.Model\ExeclDataFliter.Model.csproj">
+      <Project>{e879b0b4-d4ca-40a4-8708-91abf0e729ad}</Project>
+      <Name>ExeclDataFliter.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ExeclDataFliter.Util\ExeclDataFliter.Util.csproj">
       <Project>{411114ca-dbdb-46c2-a9c4-30f80d6886eb}</Project>
       <Name>ExeclDataFliter.Util</Name>

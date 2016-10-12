@@ -20,6 +20,7 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 订单号
         /// </summary>
@@ -29,6 +30,7 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 分众基础产品ID
         /// </summary>
@@ -38,15 +40,17 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 比例
         /// </summary>
         [DataField("比例")]
-        public float Ratio
+        public decimal Ratio
         {
             get;
             set;
         }
+
         /// <summary>
         /// 起飞日期
         /// </summary>
@@ -56,6 +60,7 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 供应商
         /// </summary>
@@ -65,6 +70,7 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 首次供应商
         /// </summary>
@@ -74,6 +80,7 @@ namespace ExeclDataFliter.Model
             get;
             set;
         }
+
         /// <summary>
         /// 航空公司
         /// </summary>
@@ -123,7 +130,7 @@ namespace ExeclDataFliter.Model
         /// 电子客票号票价
         /// </summary>
         [DataField("电子客票号票价")]
-        public decimal BasePrice
+        public decimal ETCBasePrice
         {
             get;
             set;

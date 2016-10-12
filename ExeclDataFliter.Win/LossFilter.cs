@@ -35,6 +35,7 @@ namespace ExeclDataFliter.Win
                 return;
             }
             var filePath = openFile.FileName;
+
             string fileType = System.IO.Path.GetExtension(filePath);
             if (string.IsNullOrEmpty(fileType))
             {
@@ -67,6 +68,7 @@ namespace ExeclDataFliter.Win
         /// <param name="exceldata"></param>
         private void LoadData(DataTable exceldata)
         {
+            string filename = string.Format("D://亏损日报.xlsx");
             LargeTransferData<MOriginalLossReport> largeTransferData = new LargeTransferData<MOriginalLossReport>();
 
             largeTransferData.ToListThread(exceldata);
@@ -75,19 +77,72 @@ namespace ExeclDataFliter.Win
             List<MLossReport> lossReportList = null;
             if (flightSealList != null && flightSealList.Count > 0)
             {
-                lossReportList = new List<MLossReport>();
-                MLossReport lossReport = null;
-                foreach (var item in flightSealList)
+                try
                 {
-                    lossReport = new MLossReport();
-                    lossReport.AdultFlightLeg = item.AdultFlightLeg;
-                    lossReport.AirCompany = item.AirCompany;
-                    lossReport.ArriveAirPort = item.ArriveAirPort;
-                    lossReport.BabyFlightLeg = item.FlightLeg - item.AdultFlightLeg - item.ChildFlightLeg;
-                    lossReport.ClientRealPayPrice = item.RealIncomeFromClientPrice - item.InsurancePrice - item.MailPrice;
-                    lossReport.StickMoney = item.SystemPrice*item.InBackRatio*item.
-                    lossReport.ClientShouldPayPrice = item.SystemPrice + item.JijianPrice + item.OilPrice - lossReport.StickMoney;
-                    lossReport.ClientLoss = item.ClientRealPayPrice item.ClientShouldPayTicketPrice
+
+
+                    lossReportList = new List<MLossReport>();
+                    MLossReport lossReport = null;
+                    foreach (var item in flightSealList)
+                    {
+                        lossReport = new MLossReport();
+                        lossReport.AdultFlightLeg = item.AdultFlightLeg;
+                        lossReport.AirCompany = item.AirCompany;
+                        lossReport.ArriveAirPort = item.ArriveAirPort;
+                        lossReport.BabyFlightLeg = item.FlightLeg - item.AdultFlightLeg - item.ChildFlightLeg;
+                        lossReport.ClientRealPayPrice = item.RealIncomeFromClientPrice - item.InsurancePrice - item.MailPrice;
+                        lossReport.Ratio = 0;
+                        lossReport.StickMoney = item.SystemPrice * item.InBackRatio * lossReport.Ratio;
+                        lossReport.ClientShouldPayPrice = item.SystemPrice + item.JijianPrice + item.OilPrice - lossReport.StickMoney;
+                        lossReport.ClientLoss = lossReport.ClientRealPayPrice - lossReport.ClientShouldPayTicketPrice;
+                        lossReport.OutBackRatio = item.ETCBasePrice == 0 ? 0 : (item.ETCBasePrice + item.JijianPrice + item.OilPrice - item.PayAirCompanyPrice) / item.ETCBasePrice;
+                        lossReport.BackRatioDiff = lossReport.OutBackRatio - item.InBackRatio;
+                        lossReport.BackRatioLoss = lossReport.BackRatioDiff * item.ETCBasePrice;
+                        lossReport.CabinCode = item.CabinCode;
+                        lossReport.CabinRebate = item.CabinRebate;
+                        lossReport.ChannelName = item.ChannelName;
+                        lossReport.ChildFlightLeg = item.ChildFlightLeg;
+                        lossReport.ClientShouldPayTicketPrice = item.ClientShouldPayTicketPrice;
+                        lossReport.CreateTime = item.CreateTime;
+                        lossReport.DeductiblePrice = item.DeductiblePrice;
+                        lossReport.ETCBasePrice = item.ETCBasePrice;
+                        //lossReport.FinalLoss
+                        lossReport.FirstShouldPaySupplierPrice = item.FirstShouldPaySupplierPrice;
+                        lossReport.FirstSupplier = item.FirstSupplier;
+                        lossReport.FlightLeg = item.FlightLeg;
+                        lossReport.FlightLine = item.FlightLine;
+                        lossReport.FlightNo = item.FlightNo;
+                        lossReport.FZProductName = item.FZProductName;
+                        lossReport.FZProductShape = item.FZProductShape;
+                        lossReport.InBackRatio = item.InBackRatio;
+                        lossReport.InsurancePrice = item.InsurancePrice;
+                        lossReport.JijianPrice = item.JijianPrice;
+                        lossReport.LittlePNR = item.LittlePNR;
+                        lossReport.MailPrice = item.MailPrice;
+                        lossReport.MakeupLoss = item.SystemPrice * (1 - item.InBackRatio) - item.ETCBasePrice * (1 - lossReport.OutBackRatio);
+                        lossReport.PATAPrice = item.PATAPrice;
+                        lossReport.PayAirCompanyPrice = item.PayAirCompanyPrice;
+                        lossReport.PaySupplierPrice = item.PaySupplierPrice;
+                        lossReport.PayType = item.PayType;
+                        lossReport.PolicyType = item.PolicyType;
+                        lossReport.ProductCode = item.ProductCode;
+                        lossReport.RealIncomeFromClientPrice = item.RealIncomeFromClientPrice;
+                        lossReport.RedPackagePrice = item.RedPackagePrice;
+                        lossReport.StartAirPort = item.StartAirPort;
+                        lossReport.SubChannel = item.SubChannel;
+                        lossReport.Supplier = item.Supplier;
+                        lossReport.SystemPrice = item.SystemPrice;
+                        lossReport.TakeoffDate = item.TakeoffDate;
+                        lossReport.TicketChangesPrice = item.TicketChangesPrice;
+                        lossReport.OrderID = item.OrderID;
+                        lossReportList.Add(lossReport);
+                    }
+
+                    NPioExcelHelper.FliterDataOrg(lossReportList, filename);
+                }
+                catch (Exception ex)
+                {
+                     MessageBox.Show(ex.ToString());
                 }
             }
         }
