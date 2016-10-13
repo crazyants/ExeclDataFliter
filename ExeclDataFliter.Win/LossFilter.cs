@@ -19,34 +19,49 @@ namespace ExeclDataFliter.Win
     {
         private List<MOriginalLossReport> flightSealList = new List<MOriginalLossReport>();
 
+        /// <summary>
+        /// 文件路径
+        /// </summary>
+        private string filepath = string.Empty;
+
+        /// <summary>
+        /// 显示页面信息委托
+        /// </summary>
+        private Action<string> showMsgHandler = null;
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public LossFilter()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 开始分析
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void excelImprot_Click(object sender, EventArgs e)
         {
-            OpenFileDialog openFile = new OpenFileDialog();
-            openFile.Filter = "Excel(*.csv)|*.csv|Excel(*.xlsx)|*.xlsx|Excel(*.xls)|*.xls";
-            openFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            openFile.Multiselect = false;
-            if (openFile.ShowDialog() == DialogResult.Cancel)
+            if (string.IsNullOrEmpty(this.filepath))
             {
+                MessageBox.Show("你在逗我？");
                 return;
             }
-            var filePath = openFile.FileName;
 
-            string fileType = System.IO.Path.GetExtension(filePath);
+            string fileType = System.IO.Path.GetExtension(this.filepath);
             if (string.IsNullOrEmpty(fileType))
             {
                 return;
             }
 
-            DataTable exceldata = GetDataFromExcel(filePath);
-            this.dataGridView1.DataSource = exceldata;
-            this.dataGridView1.Show();
+            ShowAction.ShowMsg("开始加载数据");
+            DataTable exceldata = GetDataFromExcel(this.filepath);
+            ShowAction.ShowMsg("数据加载完成");
             Action<DataTable> loaddatacation = new Action<DataTable>(LoadData);
             loaddatacation.BeginInvoke(exceldata, null, null);
+
         }
 
         /// <summary>
@@ -68,20 +83,21 @@ namespace ExeclDataFliter.Win
         /// <param name="exceldata"></param>
         private void LoadData(DataTable exceldata)
         {
-            string filename = string.Format("D://亏损日报.xlsx");
+            ShowAction.ShowMsg("开始分析数据");
+
+
             LargeTransferData<MOriginalLossReport> largeTransferData = new LargeTransferData<MOriginalLossReport>();
-
             largeTransferData.ToListThread(exceldata);
-
             flightSealList = largeTransferData.DataList;
+            ShowAction.ShowMsg("分析数据完成");
             List<MLossReport> lossReportList = null;
+            List<MLossReport> guochangLossReport = null;
             if (flightSealList != null && flightSealList.Count > 0)
             {
                 try
                 {
-
-
                     lossReportList = new List<MLossReport>();
+                    guochangLossReport = new List<MLossReport>();
                     MLossReport lossReport = null;
                     foreach (var item in flightSealList)
                     {
@@ -110,7 +126,7 @@ namespace ExeclDataFliter.Win
                         lossReport.FirstShouldPaySupplierPrice = item.FirstShouldPaySupplierPrice;
                         lossReport.FirstSupplier = item.FirstSupplier;
                         lossReport.FlightLeg = item.FlightLeg;
-                        lossReport.FlightLine = item.FlightLine;
+                        lossReport.FlightLineType = item.FlightLineType;
                         lossReport.FlightNo = item.FlightNo;
                         lossReport.FZProductName = item.FZProductName;
                         lossReport.FZProductShape = item.FZProductShape;
@@ -135,14 +151,32 @@ namespace ExeclDataFliter.Win
                         lossReport.TakeoffDate = item.TakeoffDate;
                         lossReport.TicketChangesPrice = item.TicketChangesPrice;
                         lossReport.OrderID = item.OrderID;
-                        lossReportList.Add(lossReport);
+                        lossReport.OrderStatus = item.OrderStatus;
+                        if (lossReport.FZProductName != null && lossReport.FZProductName.Contains("国长"))
+                        {
+                            guochangLossReport.Add(lossReport);
+                        }
+                        else
+                        {
+                            lossReportList.Add(lossReport);
+                        }
                     }
 
-                    NPioExcelHelper.FliterDataOrg(lossReportList, filename);
+                    ShowAction.ShowMsg("开始生成报表数据");
+                    NPioExcelHelper nPioExcelHelper = new NPioExcelHelper();
+                    string filenames = string.Format("D://亏损日报.csv");
+                    string guochangfilenames = string.Format("D://国长亏损日报.csv");
+
+                    nPioExcelHelper.FliterDataOrgtoSvc(guochangLossReport, guochangfilenames);
+
+                    nPioExcelHelper.FliterDataOrgtoSvc(lossReportList, filenames);
+
+
+                    MessageBox.Show(string.Format("好了，亲爱的！文件在{0},{1}", guochangfilenames, filenames));
                 }
                 catch (Exception ex)
                 {
-                     MessageBox.Show(ex.ToString());
+                    MessageBox.Show(ex.ToString());
                 }
             }
         }
@@ -183,6 +217,53 @@ namespace ExeclDataFliter.Win
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// 选择文件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Excel(*.csv)|*.csv|Excel(*.xlsx)|*.xlsx|Excel(*.xls)|*.xls";
+            openFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            openFile.Multiselect = false;
+            if (openFile.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            this.filepath = openFile.FileName;
+            this.textBox1.Text = this.filepath;
+        }
+
+        /// <summary>
+        /// 显示需要显示的页面提示信息的事件实现
+        /// </summary>
+        /// <param name="msg">页面提示信息</param>
+        private void ShowMessge_ShowMsg(string msg)
+        {
+            this.Invoke(this.showMsgHandler, msg);
+        }
+
+        /// <summary>
+        /// 具体页面显示
+        /// </summary>
+        /// <param name="msg">页面显示内容</param>
+        private void PrintMsg(string msg)
+        {
+            this.richTextBox1.AppendText("\n");
+            this.richTextBox1.AppendText(string.Format("{0}----{1}", DateTime.Now.ToShortTimeString(), msg));
+        }
+
+        private void LossFilter_Load(object sender, EventArgs e)
+        {
+            // 处理底层到页面显示的事件
+            ShowAction.ShowMsgEvent += new Action<string>(this.ShowMessge_ShowMsg);
+            // 页面显示委托
+            this.showMsgHandler = new Action<string>(this.PrintMsg);
         }
     }
 }

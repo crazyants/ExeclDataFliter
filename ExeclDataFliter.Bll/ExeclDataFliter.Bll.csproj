@@ -69,6 +69,7 @@
     <Compile Include="LargeTransferData.cs" />
     <Compile Include="NPioExcelHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShowAction.cs" />
     <Compile Include="TransferDataFactory.cs" />
     <Compile Include="XlsTransferData.cs" />
     <Compile Include="XlsxTransferData.cs" />

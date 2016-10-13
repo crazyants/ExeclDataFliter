@@ -20,7 +20,6 @@ namespace ExeclDataFliter.Bll
 {
     public class LargeTransferData<T> where T : new()
     {
-
         /// <summary>
         /// 数据集合
         /// </summary>
@@ -31,6 +30,12 @@ namespace ExeclDataFliter.Bll
         /// </summary>
         private static object lockobject = new object();
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public LargeTransferData()
+        {
+        }
         /// <summary>
         /// 
         /// </summary>

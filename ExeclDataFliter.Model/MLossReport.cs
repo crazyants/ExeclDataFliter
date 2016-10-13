@@ -328,7 +328,7 @@ namespace ExeclDataFliter.Model
         /// 航线类型
         /// </summary>
         [DataField("航线类型")]
-        public string FlightLine
+        public string FlightLineType
         {
             get;
             set;
