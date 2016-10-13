@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LossFilter));
             this.excelImprot = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -64,7 +65,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(483, 29);
+            this.button1.Location = new System.Drawing.Point(481, 23);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(86, 31);
             this.button1.TabIndex = 5;
@@ -74,6 +75,8 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.richTextBox1.ForeColor = System.Drawing.Color.SpringGreen;
             this.richTextBox1.Location = new System.Drawing.Point(12, 133);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(594, 356);
@@ -91,8 +94,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.excelImprot);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "LossFilter";
-            this.Text = "LossFilter";
+            this.Text = "分离报表";
             this.Load += new System.EventHandler(this.LossFilter_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
