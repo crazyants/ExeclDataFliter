@@ -7,6 +7,29 @@ namespace ExeclDataFliter.Util
 {
     public static class DataConvert<T> where T : new()
     {
+
+        private static T entity = new T();
+        private static Type info = typeof(T);
+        private static MemberInfo[] members = info.GetMembers();
+
+
+        /// <summary>
+        /// 将DataTable转换成Entity列表
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<T> ToList(DataTable dt)
+        {
+            List<T> list = new List<T>(dt.Rows.Count);
+
+            for (int i = 0; i < dt.Rows.Count - 1; i++)
+            {
+                list.Add(ToEntity(dt.Rows[i]));
+            }
+
+            return list;
+        }
+
         /// <summary>
         /// 将DataRow行转换成Entity
         /// </summary>
@@ -14,13 +37,11 @@ namespace ExeclDataFliter.Util
         /// <returns></returns>
         public static T ToEntity(DataRow dr)
         {
-            T entity = new T();
-            Type info = typeof(T);
-            var members = info.GetMembers();
             foreach (var mi in members)
             {
                 if (mi.MemberType == MemberTypes.Property)
                 {
+
                     //读取属性上的DataField特性
                     object[] attributes = mi.GetCustomAttributes(typeof(DataFieldAttribute), true);
                     foreach (var attr in attributes)
@@ -50,23 +71,6 @@ namespace ExeclDataFliter.Util
                 }
             }
             return entity;
-        }
-
-        /// <summary>
-        /// 将DataTable转换成Entity列表
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        public static List<T> ToList(DataTable dt)
-        {
-            List<T> list = new List<T>(dt.Rows.Count);
-
-            for (int i = 0; i < dt.Rows.Count - 1; i++)
-            {
-                list.Add(ToEntity(dt.Rows[i]));
-            }
-
-            return list;
         }
     }
 }

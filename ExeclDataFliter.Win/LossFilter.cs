@@ -80,8 +80,6 @@ namespace ExeclDataFliter.Win
         private void LoadData(DataTable exceldata)
         {
             ShowAction.ShowMsg("开始分析数据");
-
-
             LargeTransferData<MOriginalLossReport> largeTransferData = new LargeTransferData<MOriginalLossReport>();
             largeTransferData.ToListThread(exceldata);
             flightSealList = largeTransferData.DataList;
