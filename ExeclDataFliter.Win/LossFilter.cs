@@ -159,14 +159,14 @@ namespace ExeclDataFliter.Win
                     }
 
                     ShowAction.ShowMsg("开始生成报表数据");
-                    NPioExcelHelper nPioExcelHelper = new NPioExcelHelper();
                     string filenames = string.Format("D://亏损日报.csv");
                     string guochangfilenames = string.Format("D://国长亏损日报.csv");
 
-                    nPioExcelHelper.FliterDataOrgtoSvc(guochangLossReport, guochangfilenames);
+                    BaseExport guochangexport = new ExportToCsv(guochangLossReport, guochangfilenames);
+                    guochangexport.ExexcuteExport();
 
-                    nPioExcelHelper.FliterDataOrgtoSvc(lossReportList, filenames);
-
+                    BaseExport export = new ExportToCsv(lossReportList, filenames);
+                    export.ExexcuteExport();
 
                     MessageBox.Show(string.Format("好了，亲爱的！文件在{0},{1}", guochangfilenames, filenames));
                 }

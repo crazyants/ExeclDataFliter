@@ -61,17 +61,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CsvTransferData.cs" />
-    <Compile Include="DataFileType.cs" />
-    <Compile Include="ExcelTransferData.cs" />
-    <Compile Include="ITransferData.cs" />
+    <Compile Include="BaseExport.cs" />
+    <Compile Include="ExportToCsv.cs" />
+    <Compile Include="ExportToExcel.cs" />
+    <Compile Include="TransferData\CsvTransferData.cs" />
+    <Compile Include="TransferData\DataFileType.cs" />
+    <Compile Include="TransferData\ExcelTransferData.cs" />
+    <Compile Include="TransferData\ITransferData.cs" />
     <Compile Include="LargeTransferData.cs" />
     <Compile Include="NPioExcelHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowAction.cs" />
     <Compile Include="TransferDataFactory.cs" />
-    <Compile Include="XlsTransferData.cs" />
-    <Compile Include="XlsxTransferData.cs" />
+    <Compile Include="TransferData\XlsTransferData.cs" />
+    <Compile Include="TransferData\XlsxTransferData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
