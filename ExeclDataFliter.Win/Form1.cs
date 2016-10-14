@@ -1,18 +1,14 @@
 ﻿using ExeclDataFliter.Bll;
 using ExeclDataFliter.Model;
 using ExeclDataFliter.Util;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.OleDb;
 using System.IO;
-using System.Text;
-using System.Windows.Forms;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
+using System.Windows.Forms;
+
 
 namespace ExeclDataFliter.Win
 {

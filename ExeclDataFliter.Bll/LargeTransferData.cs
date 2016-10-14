@@ -9,12 +9,9 @@
 
 using Amib.Threading;
 using ExeclDataFliter.Util;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ExeclDataFliter.Bll
 {

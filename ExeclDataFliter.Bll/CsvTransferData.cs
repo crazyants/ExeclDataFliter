@@ -1,11 +1,7 @@
 ﻿using LumenWorks.Framework.IO.Csv;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ExeclDataFliter.Bll
 {
@@ -65,7 +61,7 @@ namespace ExeclDataFliter.Bll
                                 }
                                 else
                                 {
-                                    if (!string.IsNullOrWhiteSpace(csv[i]))
+                                    if (!string.IsNullOrEmpty(csv[i]))
                                     {
                                         dr[i] = csv[i];
                                     }
