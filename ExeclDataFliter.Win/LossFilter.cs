@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using ExeclDataFliter.Model;
 using ExeclDataFliter.Util;
+using Amib.Threading;
 
 namespace ExeclDataFliter.Win
 {
@@ -16,9 +17,20 @@ namespace ExeclDataFliter.Win
         private List<MOriginalLossReport> flightSealList = new List<MOriginalLossReport>();
 
         /// <summary>
+        /// 财务报表
+        /// </summary>
+        Dictionary<string, MFinanceReport> financeReportDic = null;
+
+        /// <summary>
+        /// 原始报表文件路径
+        /// </summary>
+        private string OrgReportFilepath = string.Empty;
+
+        /// <summary>
         /// 文件路径
         /// </summary>
-        private string filepath = string.Empty;
+        private string FinanceReportFilepath = string.Empty;
+
 
         /// <summary>
         /// 显示页面信息委托
@@ -40,57 +52,104 @@ namespace ExeclDataFliter.Win
         /// <param name="e"></param>
         private void excelImprot_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(this.filepath))
+            if (string.IsNullOrEmpty(this.OrgReportFilepath))
             {
                 MessageBox.Show("你在逗我？");
                 return;
             }
 
-            string fileType = System.IO.Path.GetExtension(this.filepath);
+            string fileType = System.IO.Path.GetExtension(this.OrgReportFilepath);
             if (string.IsNullOrEmpty(fileType))
             {
                 return;
             }
 
-            ShowAction.ShowMsg("开始加载数据");
-            DataTable exceldata = GetDataFromExcel(this.filepath);
-            ShowAction.ShowMsg("数据加载完成");
-            Action<DataTable> loaddatacation = new Action<DataTable>(LoadData);
-            loaddatacation.BeginInvoke(exceldata, null, null);
-
+            System.Action action = new System.Action(LoadData);
+            action.BeginInvoke(null, null);
         }
 
+
+
         /// <summary>
-        /// 从excel中获取数据
+        /// 导入数据
         /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="hasTitle"></param>
-        /// <returns></returns>
-        private DataTable GetDataFromExcel(string filepath, bool hasTitle = false)
+        private void LoadData()
         {
-            FileStream stream = new FileStream(filepath, FileMode.Open, FileAccess.Read);
-            var util = TransferDataFactory.GetUtil(filepath);
-            return util.GetData(stream);
+            SmartThreadPool smartThreadPool = new SmartThreadPool();
+            smartThreadPool.QueueWorkItem(LoadFlightSealData);
+            smartThreadPool.QueueWorkItem(LoadFinanceData);
+            smartThreadPool.WaitForIdle();
+            AanalysisReport();
         }
 
         /// <summary>
         /// 加载数据
         /// </summary>
         /// <param name="exceldata"></param>
-        private void LoadData(DataTable exceldata)
+        private void LoadFlightSealData()
         {
-            ShowAction.ShowMsg("开始分析数据");
+            ShowAction.ShowMsg("开始加载原始报表数据");
+            FileStream stream = new FileStream(OrgReportFilepath, FileMode.Open, FileAccess.Read);
+            var util = TransferDataFactory.GetUtil(OrgReportFilepath);
+            DataTable exceldata = util.GetData(stream);
             LargeTransferData<MOriginalLossReport> largeTransferData = new LargeTransferData<MOriginalLossReport>();
             largeTransferData.ToListThread(exceldata);
             flightSealList = largeTransferData.DataList;
-            ShowAction.ShowMsg("分析数据完成");
-            List<MLossReport> lossReportList = null;
+            ShowAction.ShowMsg("数据加载原始报表完成");
+        }
+
+        /// <summary>
+        /// 加载数据
+        /// </summary>
+        /// <param name="exceldata"></param>
+        private void LoadFinanceData()
+        {
+            ShowAction.ShowMsg("开始加载财务报表数据");
+            FileStream stream = new FileStream(FinanceReportFilepath, FileMode.Open, FileAccess.Read);
+            var util = TransferDataFactory.GetUtil(FinanceReportFilepath);
+            DataTable exceldata = util.GetData(stream);
+            LargeTransferData<MFinanceReport> largeTransferData = new LargeTransferData<MFinanceReport>();
+            largeTransferData.ToListThread(exceldata);
+            List<MFinanceReport> financeReportList = largeTransferData.DataList;
+            financeReportDic = new Dictionary<string, MFinanceReport>();
+            if (financeReportList != null && financeReportList.Count > 0)
+            {
+                foreach (var item in financeReportList)
+                {
+                    if (string.IsNullOrEmpty(item.OrderID))
+                    {
+                        continue;
+                    }
+                    if (!financeReportDic.ContainsKey(item.OrderID))
+                    {
+                        financeReportDic.Add(item.OrderID, item);
+                    }
+                }
+            }
+
+            ShowAction.ShowMsg("数据加载财务报表完成");
+        }
+
+        /// <summary>
+        /// 分析数据数据
+        /// </summary>
+        /// <param name="exceldata"></param>
+        private void AanalysisReport()
+        {
+            ShowAction.ShowMsg("开始分析数据");
+            // 未匹配
+            List<MLossReport> noMatchLossReportList = null;
+
+            // 已经匹配
+            List<MLossReport> matchedLossReportList = null;
+
             List<MLossReport> guochangLossReport = null;
             if (flightSealList != null && flightSealList.Count > 0)
             {
                 try
                 {
-                    lossReportList = new List<MLossReport>();
+                    noMatchLossReportList = new List<MLossReport>();
+                    matchedLossReportList = new List<MLossReport>();
                     guochangLossReport = new List<MLossReport>();
                     MLossReport lossReport = null;
                     foreach (var item in flightSealList)
@@ -152,27 +211,50 @@ namespace ExeclDataFliter.Win
                         }
                         else
                         {
-                            lossReportList.Add(lossReport);
+                            if (financeReportDic != null)
+                            {
+                                if (financeReportDic.ContainsKey(lossReport.OrderID))
+                                {
+                                    lossReport.PayAirCompanyPrice = financeReportDic[lossReport.OrderID].RealPay;
+                                    matchedLossReportList.Add(lossReport);
+                                }
+                                else
+                                {
+                                    noMatchLossReportList.Add(lossReport);
+                                }
+                            }
                         }
                     }
 
+
+                    ShowAction.ShowMsg("分析数据完成");
                     ShowAction.ShowMsg("开始生成报表数据");
-                    string filenames = string.Format("D://亏损日报.csv");
+
+                    string noMatchfilenames = string.Format("D://未匹配亏损日报.csv");
+                    string matchedfilenames = string.Format("D://亏损日报.csv");
                     string guochangfilenames = string.Format("D://国长亏损日报.csv");
 
-                    BaseExport guochangexport = new ExportToCsv(guochangLossReport, guochangfilenames);
-                    guochangexport.ExexcuteExport();
+                    System.Action<List<MLossReport>, string> exportAction = new System.Action<List<MLossReport>, string>(Export);
+                    exportAction.BeginInvoke(guochangLossReport, guochangfilenames, null, null);
 
-                    BaseExport export = new ExportToCsv(lossReportList, filenames);
-                    export.ExexcuteExport();
+                    System.Action<List<MLossReport>, string> matchedexportAction = new System.Action<List<MLossReport>, string>(Export);
+                    exportAction.BeginInvoke(matchedLossReportList, matchedfilenames, null, null);
 
-                    MessageBox.Show(string.Format("好了，亲爱的！文件在{0},{1}", guochangfilenames, filenames));
+                    System.Action<List<MLossReport>, string> noMatchexportAction = new System.Action<List<MLossReport>, string>(Export);
+                    exportAction.BeginInvoke(noMatchLossReportList, noMatchfilenames, null, null);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                 }
             }
+        }
+
+
+        public void Export(List<MLossReport> modellist, string strExcelFileName)
+        {
+            BaseExport guochangexport = new ExportToCsv(modellist, strExcelFileName);
+            guochangexport.ExexcuteExport();
         }
 
         /// <summary>
@@ -229,8 +311,8 @@ namespace ExeclDataFliter.Win
                 return;
             }
 
-            this.filepath = openFile.FileName;
-            this.textBox1.Text = this.filepath;
+            this.OrgReportFilepath = openFile.FileName;
+            this.textBox1.Text = this.OrgReportFilepath;
         }
 
         /// <summary>
@@ -249,7 +331,7 @@ namespace ExeclDataFliter.Win
         private void PrintMsg(string msg)
         {
             this.richTextBox1.AppendText("\n");
-            this.richTextBox1.AppendText(string.Format("{0}----{1}", DateTime.Now.ToShortTimeString(), msg));
+            this.richTextBox1.AppendText(string.Format("{0}----{1}", DateTime.Now.ToLongTimeString(), msg));
         }
 
         private void LossFilter_Load(object sender, EventArgs e)
@@ -258,6 +340,21 @@ namespace ExeclDataFliter.Win
             ShowAction.ShowMsgEvent += new Action<string>(this.ShowMessge_ShowMsg);
             // 页面显示委托
             this.showMsgHandler = new Action<string>(this.PrintMsg);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            openFile.Filter = "Excel(*.csv)|*.csv|Excel(*.xlsx)|*.xlsx|Excel(*.xls)|*.xls";
+            openFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            openFile.Multiselect = false;
+            if (openFile.ShowDialog() == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            this.FinanceReportFilepath = openFile.FileName;
+            this.textBox2.Text = this.FinanceReportFilepath;
         }
     }
 }

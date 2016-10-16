@@ -45,6 +45,13 @@ namespace ExeclDataFliter.Bll
         public override Stream AanalysisReport()
         {
             ShowAction.ShowMsg(string.Format("开始生成报表数据{0}", strExcelFileName));
+            MemoryStream stream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(AssembleReport()));
+            ShowAction.ShowMsg(string.Format("生成报表数据{0}完成", strExcelFileName));
+            return stream;
+        }
+
+        public string AssembleReport()
+        {
             StringBuilder svcsb = new StringBuilder();
             int pagesize = 5000;
             int pageCount = modellist.Count / pagesize;
@@ -111,7 +118,6 @@ namespace ExeclDataFliter.Bll
             for (int i = 0; i < pageCount; i++)
             {
                 List<MLossReport> TempList = modellist.Skip(pagesize * i).Take(pagesize).ToList();
-
                 ////将数据逐步写入sheet1各个行
                 for (int j = 0; j < TempList.Count; j++)
                 {
@@ -182,9 +188,7 @@ namespace ExeclDataFliter.Bll
                 }
             }
 
-            MemoryStream stream = new MemoryStream(Encoding.GetEncoding("GB2312").GetBytes(svcsb.ToString()));
-            ShowAction.ShowMsg(string.Format("生成报表数据{0}完成", strExcelFileName));
-            return stream;
+            return svcsb.ToString();
         }
     }
 }

@@ -77,6 +77,10 @@
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>..\Dll\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="SmartThreadPool, Version=2.2.3.0, Culture=neutral, PublicKeyToken=1126fe8b671e8a79, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dll\SmartThreadPool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

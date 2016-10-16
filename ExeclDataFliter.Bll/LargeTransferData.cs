@@ -40,8 +40,7 @@ namespace ExeclDataFliter.Bll
         public void ToListThread(DataTable dt)
         {
             DataList = new List<T>(dt.Rows.Count);
-
-            int pagesize = 5000;
+            int pagesize = 500;
             int threadCount = dt.Rows.Count / pagesize;
             threadCount = dt.Rows.Count % pagesize > 0 ? threadCount + 1 : threadCount;
 

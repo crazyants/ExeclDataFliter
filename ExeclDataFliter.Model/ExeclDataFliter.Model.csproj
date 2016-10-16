@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MFinanceReport.cs" />
     <Compile Include="MFlightSeal.cs" />
     <Compile Include="MLossReport.cs" />
     <Compile Include="MOriginalLossReport.cs" />

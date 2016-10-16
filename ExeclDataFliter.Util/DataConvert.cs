@@ -5,14 +5,12 @@ using System.Reflection;
 
 namespace ExeclDataFliter.Util
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public static class DataConvert<T> where T : new()
     {
-
-        private static T entity = new T();
-        private static Type info = typeof(T);
-        private static MemberInfo[] members = info.GetMembers();
-
-
         /// <summary>
         /// 将DataTable转换成Entity列表
         /// </summary>
@@ -37,33 +35,40 @@ namespace ExeclDataFliter.Util
         /// <returns></returns>
         public static T ToEntity(DataRow dr)
         {
+            T entity = new T();
+
+            Type info = typeof(T);
+
+            MemberInfo[] members = info.GetMembers();
+
             foreach (var mi in members)
             {
-                if (mi.MemberType == MemberTypes.Property)
+                if (mi.MemberType != MemberTypes.Property)
                 {
+                    continue;
+                }
 
-                    //读取属性上的DataField特性
-                    object[] attributes = mi.GetCustomAttributes(typeof(DataFieldAttribute), true);
-                    foreach (var attr in attributes)
+                //读取属性上的DataField特性
+                object[] attributes = mi.GetCustomAttributes(typeof(DataFieldAttribute), true);
+                foreach (var attr in attributes)
+                {
+                    var dataFieldAttr = attr as DataFieldAttribute;
+                    if (dataFieldAttr != null)
                     {
-                        var dataFieldAttr = attr as DataFieldAttribute;
-                        if (dataFieldAttr != null)
+                        var propInfo = info.GetProperty(mi.Name);
+                        if (dr.Table.Columns.Contains(dataFieldAttr.ColumnName))
                         {
-                            var propInfo = info.GetProperty(mi.Name);
-                            if (dr.Table.Columns.Contains(dataFieldAttr.ColumnName))
+                            //根据ColumnName，将dr中的相对字段赋值给Entity属性
+                            if (dr[dataFieldAttr.ColumnName].ToString() == dataFieldAttr.ColumnName)
                             {
-                                //根据ColumnName，将dr中的相对字段赋值给Entity属性
-                                if (dr[dataFieldAttr.ColumnName].ToString() == dataFieldAttr.ColumnName)
+                                // 这行应该是标题
+                                // string title = dr[dataFieldAttr.ColumnName].ToString();
+                            }
+                            else
+                            {
+                                if (dr[dataFieldAttr.ColumnName] != DBNull.Value)
                                 {
-                                    // 这行应该是标题
-                                    string title = dr[dataFieldAttr.ColumnName].ToString();
-                                }
-                                else
-                                {
-                                    if (dr[dataFieldAttr.ColumnName] != DBNull.Value)
-                                    {
-                                        propInfo.SetValue(entity, Convert.ChangeType(dr[dataFieldAttr.ColumnName], propInfo.PropertyType), null);
-                                    }
+                                    propInfo.SetValue(entity, Convert.ChangeType(dr[dataFieldAttr.ColumnName], propInfo.PropertyType), null);
                                 }
                             }
                         }
