@@ -493,6 +493,16 @@ namespace ExeclDataFliter.Model
             set;
         }
 
+        /// <summary>
+        /// 返点类型
+        /// </summary>
+        [DataField("返点类型")]
+        public string BackRatioType
+        {
+            get;
+            set;
+        }
+
     }
 
 }

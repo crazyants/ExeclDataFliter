@@ -175,7 +175,6 @@ namespace ExeclDataFliter.Win
                         lossReport.CreateTime = item.CreateTime;
                         lossReport.DeductiblePrice = item.DeductiblePrice;
                         lossReport.ETCBasePrice = item.ETCBasePrice;
-                        //lossReport.FinalLoss
                         lossReport.FirstShouldPaySupplierPrice = item.FirstShouldPaySupplierPrice;
                         lossReport.FirstSupplier = item.FirstSupplier;
                         lossReport.FlightLeg = item.FlightLeg;
@@ -205,6 +204,7 @@ namespace ExeclDataFliter.Win
                         lossReport.TicketChangesPrice = item.TicketChangesPrice;
                         lossReport.OrderID = item.OrderID;
                         lossReport.OrderStatus = item.OrderStatus;
+                        lossReport.BackRatioType = item.BackRatioType;
                         if (lossReport.FZProductName != null && lossReport.FZProductName.Contains("国长"))
                         {
                             guochangLossReport.Add(lossReport);

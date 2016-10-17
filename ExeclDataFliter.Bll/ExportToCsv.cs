@@ -112,7 +112,8 @@ namespace ExeclDataFliter.Bll
             svcsb.Append("\"").Append("小编码").Append("\"").Append(",");
             svcsb.Append("\"").Append("黑屏解析系统价").Append("\"").Append(",");
             svcsb.Append("\"").Append("改签费").Append("\"").Append(",");
-            svcsb.Append("\"").Append("抵扣金额").Append("\"");
+            svcsb.Append("\"").Append("抵扣金额").Append("\"").Append(",");
+            svcsb.Append("\"").Append("返点类型").Append("\"");
             svcsb.Append("\n");
             int handcount = 0;
             for (int i = 0; i < pageCount; i++)
@@ -183,7 +184,8 @@ namespace ExeclDataFliter.Bll
                     svcsb.Append("\"").Append(model.LittlePNR).Append("\"").Append(",");
                     svcsb.Append("\"").Append(model.PATAPrice).Append("\"").Append(",");
                     svcsb.Append("\"").Append((double)model.TicketChangesPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.DeductiblePrice).Append("\"");
+                    svcsb.Append("\"").Append((double)model.DeductiblePrice).Append("\"").Append(",");
+                    svcsb.Append("\"").Append(model.BackRatioType).Append("\"");
                     svcsb.Append("\n");
                 }
             }
