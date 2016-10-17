@@ -155,6 +155,11 @@ namespace ExeclDataFliter.Win
                     foreach (var item in flightSealList)
                     {
                         lossReport = new MLossReport();
+                        if (item.OrderID == "39")
+                        {
+                            string orderid = string.Empty;
+                            continue;
+                        }
                         lossReport.AdultFlightLeg = item.AdultFlightLeg;
                         lossReport.AirCompany = item.AirCompany;
                         lossReport.ArriveAirPort = item.ArriveAirPort;
@@ -230,18 +235,18 @@ namespace ExeclDataFliter.Win
                     ShowAction.ShowMsg("分析数据完成");
                     ShowAction.ShowMsg("开始生成报表数据");
 
-                    string noMatchfilenames = string.Format("D://未匹配亏损日报.csv");
-                    string matchedfilenames = string.Format("D://亏损日报.csv");
-                    string guochangfilenames = string.Format("D://国长亏损日报.csv");
+                    string noMatchfilenames = string.Format("D://未匹配亏损日报{0}.csv", DateTime.Now.ToString("yyyyMMddHHmm"));
+                    string matchedfilenames = string.Format("D://亏损日报{0}.csv", DateTime.Now.ToString("yyyyMMddHHmm"));
+                    string guochangfilenames = string.Format("D://国长亏损日报{0}.csv", DateTime.Now.ToString("yyyyMMddHHmm"));
 
-                    System.Action<List<MLossReport>, string> exportAction = new System.Action<List<MLossReport>, string>(Export);
-                    exportAction.BeginInvoke(guochangLossReport, guochangfilenames, null, null);
+
 
                     System.Action<List<MLossReport>, string> matchedexportAction = new System.Action<List<MLossReport>, string>(Export);
-                    exportAction.BeginInvoke(matchedLossReportList, matchedfilenames, null, null);
-
+                    matchedexportAction.BeginInvoke(matchedLossReportList, matchedfilenames, null, null);
+                    System.Action<List<MLossReport>, string> exportAction = new System.Action<List<MLossReport>, string>(Export);
+                    exportAction.BeginInvoke(guochangLossReport, guochangfilenames, null, null);
                     System.Action<List<MLossReport>, string> noMatchexportAction = new System.Action<List<MLossReport>, string>(Export);
-                    exportAction.BeginInvoke(noMatchLossReportList, noMatchfilenames, null, null);
+                    noMatchexportAction.BeginInvoke(noMatchLossReportList, noMatchfilenames, null, null);
                 }
                 catch (Exception ex)
                 {

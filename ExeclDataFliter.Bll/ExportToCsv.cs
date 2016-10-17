@@ -53,13 +53,6 @@ namespace ExeclDataFliter.Bll
         public string AssembleReport()
         {
             StringBuilder svcsb = new StringBuilder();
-            int pagesize = 5000;
-            int pageCount = modellist.Count / pagesize;
-            if (modellist.Count % pagesize > 0)
-            {
-                pageCount++;
-            }
-
             svcsb.Append("\"").Append("创建日期").Append("\"").Append(",");
             svcsb.Append("\"").Append("订单号").Append("\"").Append(",");
             svcsb.Append("\"").Append("分众基础产品ID").Append("\"").Append(",");
@@ -115,78 +108,76 @@ namespace ExeclDataFliter.Bll
             svcsb.Append("\"").Append("抵扣金额").Append("\"").Append(",");
             svcsb.Append("\"").Append("返点类型").Append("\"");
             svcsb.Append("\n");
-            int handcount = 0;
-            for (int i = 0; i < pageCount; i++)
+            ////将数据逐步写入sheet1各个行
+            for (int j = 0; j < modellist.Count; j++)
             {
-                List<MLossReport> TempList = modellist.Skip(pagesize * i).Take(pagesize).ToList();
-                ////将数据逐步写入sheet1各个行
-                for (int j = 0; j < TempList.Count; j++)
+                var model = modellist[j];
+                svcsb.Append("\"").Append(model.CreateTime).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.OrderID).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.ProductCode).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.Ratio).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.TakeoffDate).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.Supplier).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FirstSupplier).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.AirCompany).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.CabinCode).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.StartAirPort).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.ArriveAirPort).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.SystemPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.ETCBasePrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.JijianPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.OilPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.ClientShouldPayTicketPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.FirstShouldPaySupplierPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.PayAirCompanyPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.RealIncomeFromClientPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.PaySupplierPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.InsurancePrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.MailPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.RedPackagePrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.OrderProfit).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.InBackRatio).Append("\"").Append(",");
+                if (model.ETCBasePrice == 0)
                 {
-                    handcount++;
-                    var model = TempList[j];
-                    svcsb.Append("\"").Append(model.CreateTime).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.OrderID).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.ProductCode).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.Ratio).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.TakeoffDate).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.Supplier).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FirstSupplier).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.AirCompany).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.CabinCode).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.StartAirPort).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.ArriveAirPort).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.SystemPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.ETCBasePrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.JijianPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.OilPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.ClientShouldPayTicketPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.FirstShouldPaySupplierPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.PayAirCompanyPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.RealIncomeFromClientPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.PaySupplierPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.InsurancePrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.MailPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.RedPackagePrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.OrderProfit).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.InBackRatio).Append("\"").Append(",");
-                    if (model.ETCBasePrice == 0)
-                    {
-                        svcsb.Append("\"").Append("#DIV/0!").Append("\"").Append(",");
-                    }
-                    else
-                    {
-                        svcsb.Append("\"").Append((double)model.OutBackRatio).Append("\"").Append(",");
-                    }
+                    svcsb.Append("\"").Append("#DIV/0!").Append("\"").Append(",");
+                }
+                else
+                {
+                    svcsb.Append("\"").Append((double)model.OutBackRatio).Append("\"").Append(",");
+                }
 
-                    svcsb.Append("\"").Append((double)model.BackRatioDiff).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.FinalLoss).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.BackRatioLoss).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.MakeupLoss).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.StickMoney).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.ClientRealPayPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.ClientShouldPayPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.ClientLoss).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FlightLineType).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FlightLeg).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.AdultFlightLeg).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.ChildFlightLeg).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.BabyFlightLeg).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.PolicyType).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.ChannelName).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FZProductName).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FZProductShape).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.FlightNo).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.OrderStatus).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.PayType).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.SubChannel).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.CabinRebate).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.MemberID).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.LittlePNR).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.PATAPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.TicketChangesPrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append((double)model.DeductiblePrice).Append("\"").Append(",");
-                    svcsb.Append("\"").Append(model.BackRatioType).Append("\"");
-                    svcsb.Append("\n");
+                svcsb.Append("\"").Append((double)model.BackRatioDiff).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.FinalLoss).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.BackRatioLoss).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.MakeupLoss).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.StickMoney).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.ClientRealPayPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.ClientShouldPayPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.ClientLoss).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FlightLineType).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FlightLeg).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.AdultFlightLeg).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.ChildFlightLeg).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.BabyFlightLeg).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.PolicyType).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.ChannelName).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FZProductName).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FZProductShape).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.FlightNo).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.OrderStatus).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.PayType).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.SubChannel).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.CabinRebate).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.MemberID).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.LittlePNR).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.PATAPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.TicketChangesPrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append((double)model.DeductiblePrice).Append("\"").Append(",");
+                svcsb.Append("\"").Append(model.BackRatioType).Append("\"");
+                svcsb.Append("\n");
+                if (j > 72440)
+                {
+                    string wenti = string.Empty;
                 }
             }
 

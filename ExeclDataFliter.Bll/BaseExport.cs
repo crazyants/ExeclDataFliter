@@ -46,7 +46,7 @@ namespace ExeclDataFliter.Bll
             {
                 using (MemoryStream filestream = (MemoryStream)AanalysisReport())
                 {
-                    FileStream file = new FileStream(this.filePath, FileMode.OpenOrCreate);
+                    FileStream file = new FileStream(this.filePath, FileMode.Create);
                     filestream.WriteTo(file);
                     file.Flush();
                     file.Close();
