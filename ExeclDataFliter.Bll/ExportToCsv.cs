@@ -149,7 +149,16 @@ namespace ExeclDataFliter.Bll
                 svcsb.Append("\"").Append((double)model.BackRatioDiff).Append("\"").Append(",");
                 svcsb.Append("\"").Append((double)model.FinalLoss).Append("\"").Append(",");
                 svcsb.Append("\"").Append((double)model.BackRatioLoss).Append("\"").Append(",");
-                svcsb.Append("\"").Append((double)model.MakeupLoss).Append("\"").Append(",");
+
+                if (model.ETCBasePrice == 0)
+                {
+                    svcsb.Append("\"").Append("#DIV/0!").Append("\"").Append(",");
+                }
+                else
+                {
+                    svcsb.Append("\"").Append((double)model.MakeupLoss).Append("\"").Append(",");
+                }
+
                 svcsb.Append("\"").Append((double)model.StickMoney).Append("\"").Append(",");
                 svcsb.Append("\"").Append((double)model.ClientRealPayPrice).Append("\"").Append(",");
                 svcsb.Append("\"").Append((double)model.ClientShouldPayPrice).Append("\"").Append(",");

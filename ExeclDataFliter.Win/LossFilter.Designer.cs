@@ -82,7 +82,7 @@
             this.richTextBox1.ForeColor = System.Drawing.Color.SpringGreen;
             this.richTextBox1.Location = new System.Drawing.Point(12, 133);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(594, 356);
+            this.richTextBox1.Size = new System.Drawing.Size(613, 356);
             this.richTextBox1.TabIndex = 6;
             this.richTextBox1.Text = "";
             // 
@@ -117,7 +117,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(618, 501);
+            this.ClientSize = new System.Drawing.Size(629, 493);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label2);

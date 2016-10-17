@@ -163,15 +163,16 @@ namespace ExeclDataFliter.Win
                         lossReport.AdultFlightLeg = item.AdultFlightLeg;
                         lossReport.AirCompany = item.AirCompany;
                         lossReport.ArriveAirPort = item.ArriveAirPort;
-                        lossReport.BabyFlightLeg = item.FlightLeg - item.AdultFlightLeg - item.ChildFlightLeg;
-                        lossReport.ClientRealPayPrice = item.RealIncomeFromClientPrice - item.InsurancePrice - item.MailPrice;
                         lossReport.Ratio = 0;
-                        lossReport.StickMoney = item.SystemPrice * item.InBackRatio * lossReport.Ratio;
-                        lossReport.ClientShouldPayPrice = item.SystemPrice + item.JijianPrice + item.OilPrice - lossReport.StickMoney;
-                        lossReport.ClientLoss = lossReport.ClientRealPayPrice - lossReport.ClientShouldPayTicketPrice;
-                        lossReport.OutBackRatio = item.ETCBasePrice == 0 ? 0 : (item.ETCBasePrice + item.JijianPrice + item.OilPrice - item.PayAirCompanyPrice) / item.ETCBasePrice;
-                        lossReport.BackRatioDiff = lossReport.OutBackRatio - item.InBackRatio;
-                        lossReport.BackRatioLoss = lossReport.BackRatioDiff * item.ETCBasePrice;
+                        lossReport.OrderID = item.OrderID;
+                        lossReport.PayAirCompanyPrice = item.PayAirCompanyPrice;
+                        if (financeReportDic != null)
+                        {
+                            if (financeReportDic.ContainsKey(lossReport.OrderID))
+                            {
+                                lossReport.PayAirCompanyPrice = financeReportDic[lossReport.OrderID].RealPay;
+                            }
+                        }
                         lossReport.CabinCode = item.CabinCode;
                         lossReport.CabinRebate = item.CabinRebate;
                         lossReport.ChannelName = item.ChannelName;
@@ -192,9 +193,7 @@ namespace ExeclDataFliter.Win
                         lossReport.JijianPrice = item.JijianPrice;
                         lossReport.LittlePNR = item.LittlePNR;
                         lossReport.MailPrice = item.MailPrice;
-                        lossReport.MakeupLoss = item.SystemPrice * (1 - item.InBackRatio) - item.ETCBasePrice * (1 - lossReport.OutBackRatio);
                         lossReport.PATAPrice = item.PATAPrice;
-                        lossReport.PayAirCompanyPrice = item.PayAirCompanyPrice;
                         lossReport.PaySupplierPrice = item.PaySupplierPrice;
                         lossReport.PayType = item.PayType;
                         lossReport.PolicyType = item.PolicyType;
@@ -207,9 +206,18 @@ namespace ExeclDataFliter.Win
                         lossReport.SystemPrice = item.SystemPrice;
                         lossReport.TakeoffDate = item.TakeoffDate;
                         lossReport.TicketChangesPrice = item.TicketChangesPrice;
-                        lossReport.OrderID = item.OrderID;
+
                         lossReport.OrderStatus = item.OrderStatus;
                         lossReport.BackRatioType = item.BackRatioType;
+                        lossReport.BabyFlightLeg = item.FlightLeg - item.AdultFlightLeg - item.ChildFlightLeg;
+                        lossReport.ClientRealPayPrice = item.RealIncomeFromClientPrice - item.InsurancePrice - item.MailPrice;
+                        lossReport.StickMoney = item.SystemPrice * item.InBackRatio * lossReport.Ratio;
+                        lossReport.ClientShouldPayPrice = item.SystemPrice + item.JijianPrice + item.OilPrice - lossReport.StickMoney;
+                        lossReport.ClientLoss = lossReport.ClientRealPayPrice - lossReport.ClientShouldPayTicketPrice;
+                        lossReport.OutBackRatio = lossReport.ETCBasePrice == 0 ? 0 : (lossReport.ETCBasePrice + lossReport.JijianPrice + lossReport.OilPrice - lossReport.PayAirCompanyPrice) / lossReport.ETCBasePrice;
+                        lossReport.BackRatioDiff = lossReport.OutBackRatio - lossReport.InBackRatio;
+                        lossReport.BackRatioLoss = lossReport.BackRatioDiff * lossReport.ETCBasePrice;
+                        lossReport.MakeupLoss = lossReport.SystemPrice * (1 - lossReport.InBackRatio) - lossReport.ETCBasePrice * (1 - lossReport.OutBackRatio);
                         if (lossReport.FZProductName != null && lossReport.FZProductName.Contains("国长"))
                         {
                             guochangLossReport.Add(lossReport);
@@ -220,7 +228,6 @@ namespace ExeclDataFliter.Win
                             {
                                 if (financeReportDic.ContainsKey(lossReport.OrderID))
                                 {
-                                    lossReport.PayAirCompanyPrice = financeReportDic[lossReport.OrderID].RealPay;
                                     matchedLossReportList.Add(lossReport);
                                 }
                                 else
