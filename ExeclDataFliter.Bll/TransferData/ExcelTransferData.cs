@@ -45,7 +45,12 @@ namespace ExeclDataFliter.Bll
         {
             using (stream)
             {
-                var sheet = _workBook.GetSheetAt(0);
+                var sheet = _workBook.GetSheet("巡查明细");
+                if (sheet == null)
+                {
+                    sheet = _workBook.GetSheetAt(0);
+                }
+
                 if (sheet != null)
                 {
                     var headerRow = sheet.GetRow(0);
@@ -60,6 +65,10 @@ namespace ExeclDataFliter.Bll
                         for (int i = 0; i < columnCount; i++)
                         {
                             var cell = excelRow.GetCell(i);
+                            if (cell == null)
+                            {
+                                continue;
+                            }
 
                             if (index == 0)
                             {
@@ -67,7 +76,6 @@ namespace ExeclDataFliter.Bll
                             }
                             else
                             {
-
                                 if (cell != null)
                                 {
                                     dtRow[i] = GetValue(cell);
@@ -75,6 +83,7 @@ namespace ExeclDataFliter.Bll
                             }
 
                         }
+
                         if (index > 0)
                         {
                             dt.Rows.Add(dtRow);

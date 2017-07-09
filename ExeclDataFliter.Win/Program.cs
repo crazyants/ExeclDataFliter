@@ -13,7 +13,7 @@ namespace ExeclDataFliter.Win
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new LossFilter());
+            Application.Run(new DataFilter());
         }
     }
 }
